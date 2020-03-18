@@ -1,0 +1,198 @@
+@charset "UTF-8";
+
+/*** Allgemein ***/
+
+*{
+	font-family: 'Open Sans Condensed', arial;
+	margin:0;
+	padding:0;
+}
+:root{
+	--green: #c5ddc3;
+	--dorange: #f60;
+	--lorange: #ff9f60;
+	--fullheight: calc(100vh - 130px);
+	--fullwidth: calc(100vw - 200px);
+}
+
+
+body{
+	background-color: #ffffff;
+	
+}
+
+/*** Header ***/
+header{
+	padding:30px;
+	background-color: var(--green);
+}
+header h1{
+	background-color:inherit;
+	text-transform:uppercase;
+	letter-spacing:3px;
+	font-size:35px;
+	line-height:1;
+	text-align:center;
+}
+
+/*** Hauptnavigation ***/
+#mainnav{
+	width:100%;
+	margin:0;
+	background-color:grey;
+	font-size:25px;
+}
+#mainnav ul{
+	background-color:grey;
+	width:100%;
+	display:flex;
+	justify-content:center;
+	position:center;
+}
+#mainnav ul li{
+	list-style-type:none;
+	background-color:inherit;
+	width:13%;
+}
+#mainnav ul li a{
+	background-color:inherit;
+	color:white;
+	text-decoration:none;
+	display:block;
+	padding:5px;
+	text-align:center;
+	line-height:1;	
+}
+#mainnav ul li a.active, #subnav ul li a.active{
+	background-color:#f0f0f0;	
+	color:var(--dorange);
+	
+}
+#mainnav ul li a:hover{
+	background-color:#f0f0f0;
+	color:var(--dorange);
+}
+
+/*** Wrapper ***/
+#wrapper{	
+	background:#f0f0f0;
+	display:flex;
+	min-height:80vh;
+}
+
+/*** Unternavigation ***/
+#subnav{
+	flex:0 0 200px;
+	margin-right:5px;
+	background:white;
+	/*background:#ff9f60;*/
+}
+#subnav ul{
+	margin:0;
+	padding:0;
+	list-style-type:none;
+}
+#subnav ul li{
+	margin-bottom:2px;
+	
+}
+#subnav ul li a{
+	display:block;
+	padding:7px;	
+	padding-right:0;
+	line-height:30px;
+	background:var(--lorange);
+	color:#fff;
+	text-decoration:none;
+	font-size:25px;
+}
+#subnav ul li a:hover{
+	background:#f0f0f0;
+	color:var(--dorange);
+}
+
+/*** Inhalt ***/
+section{
+	min-height:var(--fullheight);
+	width:100%;
+	margin: 30px;
+	margin-bottom:60px;
+}
+section h2{
+	font-size:30px;
+	padding-bottom:20px;
+	
+}
+.songbox{
+	margin:0;
+	padding:0;
+	width:100%
+}
+pre{
+    white-space: pre-wrap;
+}
+.chord{
+	color:var(--dorange);
+	font-size:90%;
+}
+
+.song, .chord{
+	font-family:consolas;
+	padding:0;
+	margin:0;
+}
+.song{
+	
+}
+	
+
+.transposemenu {
+	padding:10px;
+	position:fixed;
+	bottom:20px;
+	right:20px;
+	background-color:white;
+	border-radius:20px;
+	box-shadow:0px 0px 3px ;
+}
+.transposemenu ul{
+	list-style-type:none;
+	display:flex;
+	justify-content:center;
+}
+.transposemenu ul li fieldset{
+	border:none;
+}
+.beschriftung {
+	float:left;
+}
+.beschriftung legend{
+	padding:3px;
+	line-height:1;
+}
+.transposemenu ul li button{
+	border-radius:50%;
+	width:20px;
+	height:20px;
+	margin-left:5px;
+} 
+
+.transposemenu ul li .buttons{
+	margin-right:30px;
+	float:left;
+}
+
+/*** Fusszeile ***/
+footer{
+	height:20px;
+	margin:0 auto;
+	background:grey;
+	
+}
+footer p{
+	margin:0;
+	line-height:20px;
+	font-size:10px;
+	color:#fff;
+	text-align:center;
+}
