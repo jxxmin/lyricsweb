@@ -10,64 +10,118 @@ header("Content-Type: text/html; charset=utf-8");
 //directories, which don't count
 $wrongdir = [".", "..", "include", "img", "pdfs", ".idea"];
 
-function loadfromDatabase(){
+/* Session erneuern */
+session_start();
+session_regenerate_id();
 
-}
 
-function getSongtext($id, $song){
-    $songtext = '';
-    if($id != '' && $song != '') {
+//function loadfromDatabase(){
 
-        $f = "./songs/$id/$song.txt";
-        $resource = fopen($f, 'r');
-        $songtext = "<p class='song'>" . tochords(fgets($resource));
-        while (!feof($resource)) {
-            $line = tochords(fgets($resource));
-            if (ctype_space($line)) {
-                $line = "<br><p class='song'>";
-            } else {
-                //$line .="<br>";
-            }
-            $songtext .= $line;
-
-        }
+    try {
+        $user = 'root';
+        $password = '';
+        $host = 'localhost';
+        $database = 'lyricsweb';
+        $GLOBALS['con'] = new mysqli($host,$user,$password,$database);
     }
-    return $songtext;
-}
+    catch(PDOException $e){
+        echo '<p>Verbindung fehlgeschlagen';
+        if(ini_get('display_errors')){
+            echo $e -> getMessage();
+        }
+        exit;
+    }
+//}
+
 
 function getGenres(){
-    $location = "./songs";
-    global $id;
-    $genres = array();
-    if($dir = opendir($location)) {
-        while (false !== ($genre = readdir($dir))) {
-            if(isGenre($genre)) {
-                array_push($genres, $genre);
+
+    //if (isset($_SESSION['username'])) {
+        $query = "select * from genre";
+
+        try {
+            $result = mysqli_query($GLOBALS['con'], $query);
+            if ($result == null) {
+                session_destroy();
+                $genres = null;
+            } else {
+                while($row = mysqli_fetch_array($result)){
+                    $genres[] = $row['genre'];
+                }
             }
+        } catch (Exception $e) {
+            echo "Etwas ist schief gelaufen. Bitte erneut versuchen";
         }
-        closedir($dir);
-
-
-    }
+   /* } else {
+        session_destroy();
+        header('Location: ../index.php');
+    }*/
     return $genres;
 }
 
+function getSongtext($id){
+   // if (isset($_SESSION['username'])) {
+
+        try {
+            if ($stmt = mysqli_prepare($GLOBALS['con'], "SELECT lyrics.songtext FROM lyrics where (titel = ?)")) {
+                mysqli_stmt_bind_param($stmt, "s", $song);
+                $song = $_GET['song'];
+
+                mysqli_stmt_execute($stmt);
+                mysqli_stmt_bind_result($stmt, $songtext);
+
+                mysqli_stmt_fetch($stmt);
+
+                if ($songtext == null) {
+                    session_destroy();
+                    $songtext = null;
+                }
+                mysqli_stmt_close($stmt);
+
+            }
+
+            } catch (Exception $e) {
+            echo "Etwas ist schief gelaufen. Bitte erneut versuchen";
+        }
+    /* } else {
+         session_destroy();
+         header('Location: ../index.php');
+     }*/
+    return $songtext;
+
+}
 
 function getSongs(){
-    global $id;
-    global $song;
-    $location = "./songs/$id";
-    $songs = array();
-    if($dir = opendir($location)) {
-        while (false !== ($file = readdir($dir))) {
-            if (!is_dir($file) && $file != "index.php") {
-                $file = str_replace('.txt', '', $file);
-                $songs[$file] = makeName($file);
+    //if (isset($_SESSION['username'])) {
+        try {
+            if ($stmt = mysqli_prepare($GLOBALS['con'], "SELECT lyrics.titel FROM lyrics join genre on genre.id = lyrics.fk_genre where (genre.genre = ?)")) {
+                mysqli_stmt_bind_param($stmt, "s", $genre);
+                $genre = $_GET['id'];
+                mysqli_stmt_execute($stmt);
+
+                mysqli_stmt_bind_result($stmt, $titel);
+
+                while (mysqli_stmt_fetch($stmt)) {
+                    $songs[$titel] = makeName($titel);
+                }
+
+                if($titel == null){
+                    session_destroy();
+                    $songs = null;
+                }
+
+                mysqli_stmt_close($stmt);
             }
+
+        } catch (Exception $e) {
+            echo "Etwas ist schief gelaufen. Bitte erneut versuchen";
         }
-        closedir($dir);
-    }
+    /*} else {
+        session_destroy();
+        header('Location: ../index.php');
+    }*/
     return $songs;
+
 }
 
 function makeName($input){
