@@ -10,6 +10,7 @@ header("Content-Type: text/html; charset=utf-8");
 //directories, which don't count
 $wrongdir = [".", "..", "include", "img", "pdfs", ".idea"];
 
+$songtext = '';
 
 try {
     $user = 'root';
@@ -46,25 +47,31 @@ function getGenres(){
     return $genres;
 }
 
-function getSongtext($song){
-    $songtext = '';
+function getSongtext(){
+ global $songtext;
     try {
         if ($stmt = mysqli_prepare($GLOBALS['con'], "SELECT lyrics.songtext FROM lyrics where (titel = ?)")) {
             mysqli_stmt_bind_param($stmt, "s", $song);
+            $song = $_GET['song'];
 
             mysqli_stmt_execute($stmt);
-            mysqli_stmt_bind_result($stmt, $songtext);
+            mysqli_stmt_bind_result($stmt, $text);
 
             mysqli_stmt_fetch($stmt);
 
             mysqli_stmt_close($stmt);
+
+            $songtext = $text;
         }
+
     } catch (Exception $e) {
         echo "Etwas ist schief gelaufen. Bitte erneut versuchen";
     }
     return $songtext;
 
 }
+
+
 
 function getSongs(){
     $songs = [];

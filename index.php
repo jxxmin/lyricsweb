@@ -71,7 +71,7 @@ $file = 'home.php';
                         $song = $_GET['song'];
                         include "view/transposemenu.php";
                         $columns = getColumns();
-                        $songtext = styleSongtext(getSongtext($id, $song));
+                        $songtext = formatSongtext(getSongtext($id, $song));
                         $title = makeName($song);
                         echo "<section>";
                         echo "<h2>$title</h2><pre><div $columns class='songbox'>$songtext</div></pre></section>";

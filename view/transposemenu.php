@@ -97,6 +97,20 @@ function checkfont(){
 
 }
 
+function formatSongtext($text){
+    $songtext = '';
+    foreach(preg_split("/((\r?\n)|(\r\n?))/", $text) as $line){
+        $line = "<p class='song'>".tochords($line);
+        if(empty($line) or ctype_space($line)){
+            $line = "<br><p class='song'>";
+        } else {
+            $line .="<br>";
+        }
+        $songtext .= $line;
+    }
+    return styleSongtext($songtext);
+}
+
 function checktrans(){
     global $songtext;
     global $trans;
