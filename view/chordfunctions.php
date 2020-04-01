@@ -9,6 +9,7 @@ header("Content-Type: text/html; charset=utf-8");
 
 
 //constants
+$sharp = true;
 $opentag = "<span class='chord'>";
 $closetag = "</span>";
 $chordregex = '/(\b[A-G][#|b]?m?[2-9]?((sus|maj|min|aug|dim|Maj)[2-9]?)?\b)/';

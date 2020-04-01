@@ -9,6 +9,9 @@ header("Content-Type: text/html; charset=utf-8");
 
 //New Form
 
+$style = "";
+$fontsize = 15;
+
 $trans = 0;
 $font = 0;
 $col = 1;

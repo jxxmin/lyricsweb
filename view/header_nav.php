@@ -28,7 +28,7 @@ $genre;
         if($id == ""|| $id=='login' || $id=='edit'){
             $active = $activetext;
         }
-        if($loggedin) {
+        if(isLoggedIn()) {
             echo "<li><a $active href='index.php'>Edit</a>";
         } else {
             echo "<li><a $active href='index.php'>Login</a>";
