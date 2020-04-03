@@ -144,7 +144,7 @@ function passwordIsCorrect($password, $dbPassword){
 }
 
 function hashPassword($input) {
-    $salt = bin2hex(random_bytes(64));
+    $salt = bin2hex(random_bytes(32));
     $hash = hash("sha256", $salt . $input);
     $final = $salt . $hash;
     return $final;
