@@ -7,41 +7,30 @@ Feb/Mär/Apr 2020 Sofia Horlacher, Jasmin Fitz, Luisa Stückelberger
 */
 header("Content-Type: text/html; charset=utf-8");
 
-//Location of home
-$location = "./songs";
-$activetext = 'class="active"';
-$active = '';
+//parms: $navArray, $activeTab
+$genreArray = (isset($genreArray)) ? $genreArray : [];
+$actionArray = (isset($actionArray)) ? $actionArray : [];
+$activeTab = (isset($activeTab)) ? $activeTab : "";
 
+?>
 
-//variables
-$genre;
+    <header>
+        <h1>Songtexte und Akkorde</h1>
+    </header>
 
-
-?><header>
-	<h1>Songtexte und Akkorde</h1>
-</header>
-
-<nav id='mainnav'>
-	<ul>
-
-		<?php
-        if($id == ""|| $id=='login' || $id=='edit'){
-            $active = $activetext;
-        }
-        if(isLoggedIn()) {
-            echo "<li><a $active href='index.php'>Edit</a>";
-        } else {
-            echo "<li><a $active href='index.php'>Login</a>";
-        }
-        $genres = getGenres();
-        foreach ($genres as $genre){
-            if ($id == $genre) {
-                $active = $activetext;
-            } else {
-                $active = '';
+    <nav id='mainnav'>
+        <ul>
+            <?php
+            foreach ($actionArray as $id => $actionTitle) {
+                $active = ($activeTab == $id) ? 'class="active"' : '';
+                echo "<li><a $active href='index.php?id=$id'>$actionTitle</a>";
             }
-            echo "<li><a $active href='index.php?id=$genre'>" . ucfirst($genre) . "</a>";
-        }
-		?>
-	</ul>
-</nav>
+            foreach ($genreArray as $genreId => $genreTitle) {
+                $active = ($activeTab == $genreId) ? 'class="active"' : '';
+                echo "<li><a $active href='index.php?genre=$genreId'>$genreTitle</a>";
+            }
+            ?>
+        </ul>
+    </nav>
+
+

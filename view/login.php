@@ -5,66 +5,34 @@ Module 151 / 426
 Webapplikation mit Datenbank / Agile Softwareentwicklung
 Feb/Mär/Apr 2020 Sofia Horlacher, Jasmin Fitz, Luisa Stückelberger
 */
-global $id;
-global $song;
 
-if(isset($_POST['username'])&&isset($_POST['password'])) { //Form submitted
-    $username = sanitize($_POST['username']);
-    $pw = sanitize($_POST['password']);
-    $user = false;
-    if(isset($_POST['secondPassword'])){ //Registration submitted
-        $secondpw = sanitize($_POST['secondPassword']);
-        $registration = registerOnDb($username, $pw);
-        if($registration){
-            $user = loginOnDB($username,$pw);
-        } else{
-            $message = $registration;
-        }
-    } else {
-        $user = loginOnDB($username, $pw);
-    }
-    if(!$user){
-        echo "wrong password";
-        $username = null;
-        session_destroy();
-    } else {
-        if ($user == 'admin'){
-            setAdminSession();
-        } else {
-            setUserSession();
-        }
-        header('Location: ./index.php?id=edit');
-    }
-}else{
-    session_destroy();
-}
-
-?>
-    <form method="post" action="index.php?id=<?php echo $id?>&song=<?php echo $song?> ">
+//parms: $activeId, $userValid, $passwordValid, $passwordMatch, $registerSuccess, $loginSuccess,
+$userValid = (isset($userValid)) ? $userValid : true;
+$passwordValid= (isset($passwordValid)) ? $passwordValid : true;
+$passwordMatch= (isset($passwordMatch)) ? $passwordMatch : true;
+$registerSuccess= (isset($registerSuccess)) ? $registerSuccess : true;
+$loginSuccess= (isset($loginSuccess)) ? $loginSuccess : true;
+if($activeId) {?>
+    <form method="post" action="index.php?id=login&action=<?php echo $activeId?> ">
     <p>Username:</p>
-    <input type="email" name="username" required /><br />
+    <input type="email" name="username" required />
+        <?php if(!$userValid) { echo "<span  class='error'>the username needs to be an e-mail address</span>";}?>
+    <br />
     <p>Passwort:</p>
-    <input type="password" name="password" required/><br />
+    <input type="password" name="password" required/>
+        <?php if(!$passwordValid) { echo "<span  class='error'>the password needs to contain 8 characters, 1 uppercase, 1 lowercase, 1 number</span>";}?>
 <?php
-if($song == 'login'){
-    echo "<input type='submit' value='Anmelden' /></form>";
-} else //($song == 'register')
-    {
+if($activeId == 'login'){
+    echo "<br /><input type='submit' name='login' value='Anmelden' />";
+    if(!$loginSuccess) { echo "<br/><span  class='error'>invalid username or password</span>";}
+} elseif($activeId == 'register') {//($action == 'register')
     ?>
-    <p>Passwort wiederholen:</p>
-    <input type="password" name="secondPassword" required/><br />
-    <input type='submit' value='Registrieren' /></form>
-    <?php
+    <br /><p>Passwort wiederholen:</p>
+    <input type="password" name="secondPassword" required/>
+        <?php if(!$passwordMatch) { echo "<span  class='error'>the passwords don't match</span>";}?>
+        <br /><input type='submit' name='register' value='Registrieren' />
+        <?php if(!$registerSuccess) { echo "<br/><span  class='error'>the username is already taken</span>";}?>    <?php
 }
-
-
-
+echo "</form>";
+}
 ?>
-
-
-
-
-
-
-
-

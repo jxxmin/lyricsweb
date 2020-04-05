@@ -5,48 +5,7 @@ Module 151 / 426
 Webapplikation mit Datenbank / Agile Softwareentwicklung
 Feb/Mär/Apr 2020 Sofia Horlacher, Jasmin Fitz, Luisa Stückelberger
 */
-header("Content-Type: text/html; charset=utf-8");
-
-//directories, which don't count
-$wrongdir = [".", "..", "include", "img", "pdfs", ".idea"];
-
-$songtext = '';
-
-try {
-    $user = 'root';
-    $password = '';
-    $host = 'localhost';
-    $database = 'lyricsweb';
-    $GLOBALS['con'] = new mysqli($host,$user,$password,$database);
-}
-catch(PDOException $e){
-    echo '<p>Verbindung fehlgeschlagen';
-    if(ini_get('display_errors')){
-        echo $e -> getMessage();
-    }
-    exit;
-}
-
-function getGenres(){
-
-        $query = "select * from genre";
-
-        try {
-            $result = mysqli_query($GLOBALS['con'], $query);
-            if ($result == null) {
-                $genres = null;
-            } else {
-                while($row = mysqli_fetch_array($result)){
-                    $genres[] = $row['genre'];
-                }
-            }
-        } catch (Exception $e) {
-            echo "Etwas ist schief gelaufen. Bitte erneut versuchen";
-        }
-
-    return $genres;
-}
-
+/*
 function getSongtext(){
  global $songtext;
     try {
@@ -70,7 +29,6 @@ function getSongtext(){
     return $songtext;
 
 }
-
 
 
 function getSongs(){
@@ -97,6 +55,7 @@ function getSongs(){
     return $songs;
 
 }
+
 
 function loginOnDB($username, $pw){
 
@@ -161,4 +120,6 @@ function makeName($input){
     $input = str_replace('_', ' ', $input);
     return $input;
 }
+
+/*
 ?>
