@@ -139,11 +139,14 @@ class LoginController
 
     private function setUserSession(){
         $_SESSION['loggedIn'] = "true";
-        $_SESSION['token'] = $this->getToken();
+        $_SESSION['token'] = $this->makeToken();
         session_write_close();
     }
 
     public static function getToken(){
+        return $_SESSION['token'];
+    }
+    private function makeToken(){
         $length = 32;
         return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, $length);
     }

@@ -7,17 +7,21 @@ class DBAccess
 
     //Connection
     private $connection;
+    private $adminConnection;
     private const user = 'root';
     private const password = '';
+    private const adminUser = 'root'; //TODO
+    private const adminPassword = ''; //TODO
     private const host = 'localhost';
     private const database = 'lyricsweb';
 
     private function __construct(){
         $this->openConnection();
+        $this->openAdminConnection();
     }
 
     public static function getController(){
-        if(is_null(self::$dbAccess)){
+        if(is_null(self::$dbAccess) ){
             self::$dbAccess = new DBAccess();
         }
         return self::$dbAccess;
@@ -94,7 +98,19 @@ class DBAccess
 
     }
 
-    private function openConnection(){
+    public function openAdminConnection(){
+        try {
+            $this->adminConnection = new mysqli($this::host,$this::adminUser,$this::adminPassword,$this::database);
+        }
+        catch(PDOException $e){
+            echo '<p>Verbindung fehlgeschlagen';
+            if(ini_get('display_errors')){
+                echo $e -> getMessage();
+            }
+            exit;
+        }
+    }
+    public function openConnection(){
         try {
             $this->connection = new mysqli($this::host,$this::user,$this::password,$this::database);
         }
@@ -106,6 +122,7 @@ class DBAccess
             exit;
         }
     }
+
 
     public function loadAllGenres(){
         $query = "select * from genre";

@@ -40,6 +40,8 @@ class SongtextController
         require_once './view/Songs/transposemenu.php';
 
         if($includeEditButtons){
+            $token = LoginController::getToken();
+            //parms: $genre, $song, $token,
             require_once './view/Songs/editmenu.php';
         }
     }
