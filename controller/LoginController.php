@@ -65,7 +65,7 @@ class LoginController
         $array['login'] = 'Login';
         $array['register'] = 'Register';
         //parms: $array[song_id => Song Title], $activeId, $genreId, $isSong
-        require_once "./view/songnavigation.php";
+        require_once "./view/Navigation/songnavigation.php";
 
         $userValid = $this->userValid;
         $passwordValid = $this->passwordValid;
@@ -73,7 +73,7 @@ class LoginController
         $registerSuccess = $this->registerSuccess;
         $loginSuccess = $this->loginSuccess;
         //parms: $activeId, $userValid, $passwordValid, $passwordMatch, $registerSuccess, $loginSuccess,
-        require_once ("./view/login.php");
+        require_once("./view/Login/login.php");
 
     }
 
@@ -124,17 +124,17 @@ class LoginController
         return $this->registerSuccess;
     }
 
-    public function isLoggedIn(){
+    public static function isLoggedIn(){
         return isset($_SESSION['loggedIn']) ? $_SESSION['loggedIn'] : false;
     }
 
-    public function isAdmin(){
+    public static function isAdmin(){
         return isset($_SESSION['admin']) ? $_SESSION['admin'] : false;
     }
 
     private function setAdminSession(){
         $_SESSION['admin'] = "true";
-        setUserSession();
+        $this->setUserSession();
     }
 
     private function setUserSession(){
@@ -143,7 +143,7 @@ class LoginController
         session_write_close();
     }
 
-    private function getToken(){
+    public static function getToken(){
         $length = 32;
         return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, $length);
     }
@@ -155,13 +155,6 @@ class LoginController
         ];
         $hash = password_hash($input, PASSWORD_DEFAULT);
         return $hash;
-    }
-    private function passwordIsCorrect($userpassword, $hashedPassword) {
-        $salt = substr($hashedPassword, 0, 32);
-        $correcthash = substr($hashedPassword, 32, 64);
-        $userhash = hash("sha256", $salt . $userpassword);
-
-        return ($userhash == $correcthash);
     }
 
 }

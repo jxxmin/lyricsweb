@@ -17,10 +17,10 @@ class EditController
         $array['add_song'] = 'Add Song';
         $array['add_genre'] = 'Add Genre';
         //parms: $array[song_id => Song Title], $activeId, $genreId, $isSong
-        require_once "./view/songnavigation.php";
+        require_once "./view/Navigation/songnavigation.php";
 
         //parms: $action
-        require_once ("./view/edit.php");
+        if($activeId) require_once("./view/Edit/$activeId.php");
 
     }
 }

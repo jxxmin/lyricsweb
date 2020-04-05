@@ -14,7 +14,7 @@ $col = (isset($col)) ? $col : 1;
 
 //New Form
 ?>
-<div class="transposemenu">
+<div class="hovermenu" id="transposemenu">
 	<form method="post" action="index.php?genre=<?php echo $genre?>&song=<?php echo $song?> ">
 		<input type="hidden" name="font" value="<?php echo ($font) ?> ">
 		<input type="hidden" name="trans" value="<?php echo ($trans) ?> ">

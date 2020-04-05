@@ -146,7 +146,7 @@ pre{
 }
 	
 
-.transposemenu {
+.hovermenu {
 	padding:10px;
 	position:fixed;
 	bottom:20px;
@@ -155,30 +155,43 @@ pre{
 	border-radius:20px;
 	box-shadow:0px 0px 3px ;
 }
-.transposemenu ul{
+#editmenu{
+	bottom: 80px;
+	padding: 7.5px;
+}
+.hovermenu ul{
 	list-style-type:none;
 	display:flex;
 	justify-content:center;
 }
-.transposemenu ul li fieldset{
+.hovermenu ul li fieldset{
 	border:none;
 }
 .beschriftung {
 	float:left;
 }
 .beschriftung legend{
+	margin-left:15px;
 	padding:3px;
 	line-height:1;
 }
-.transposemenu ul li button{
+#transposemenu ul li button{
 	border-radius:50%;
 	width:20px;
 	height:20px;
 	margin-left:5px;
-} 
-
-.transposemenu ul li .buttons{
-	margin-right:30px;
+}
+#editmenu ul li button{
+	border-radius:13px;
+	height:25px;
+	margin:0 2.5px;
+	padding: 0 5px;
+ }
+#editmenu ul li .buttons{
+	margin:0 15px;
+}
+#transposemenu ul li .buttons{
+	margin-right:15px;
 	float:left;
 }
 

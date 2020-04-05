@@ -14,6 +14,7 @@ require_once("controller/IndexController.php");
 require_once("controller/FormController.php");
 require_once("controller/LoginController.php");
 require_once("controller/SongtextController.php");
+require_once("controller/SongtextEditController.php");
 require_once("controller/EditController.php");
 require_once("controller/GenreController.php");
 require_once("model/DBAccess.php");
@@ -34,6 +35,6 @@ $indexController = new IndexController();
 <body>
 
 <?php
-
 $indexController->render();
-
+//require_once("view/footer.php");
+?>

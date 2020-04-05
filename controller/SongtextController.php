@@ -22,6 +22,28 @@ class SongtextController
 
     private $text;
 
+    public function render($includeEditButtons){
+        $title = $this->songtext->getTitle();
+        $songtext = $this->text;
+        $columns = $this->columnStyle;
+
+        //PARMS: title, columns, songtext
+        require_once './view/Songs/songtext.php';
+
+        $genre = $this->songtext->getGenre()->getId();
+        $song = $this->songtext->getId();
+        $font = $this->fontScale;
+        $trans = $this->trans;
+        $col = $this->col;
+
+        //parms: $genre, $song, $font, $trans, $col
+        require_once './view/Songs/transposemenu.php';
+
+        if($includeEditButtons){
+            require_once './view/Songs/editmenu.php';
+        }
+    }
+
     public function __construct(Songtext $songtext)
     {
         $this->songtext = $songtext;
@@ -61,24 +83,6 @@ class SongtextController
 
     }
 
-    public function render($includeEditButtons){
-        $title = $this->songtext->getTitle();
-        $songtext = $this->text;
-        $columns = $this->columnStyle;
-
-        //PARMS: title, columns, songtext
-        require_once './view/songtext.php';
-
-        $genre = $this->songtext->getGenre()->getId();
-        $song = $this->songtext->getId();
-        $font = $this->fontScale;
-        $trans = $this->trans;
-        $col = $this->col;
-
-        //parms: $genre, $song, $font, $trans, $col
-        require_once './view/transposemenu.php';
-    }
-
     private function toChords($input){
         return preg_replace($this->chordregex, $this->replace, $input);
     }
@@ -115,12 +119,12 @@ class SongtextController
     }
 
     private function formatSongtext($text){
-        $songtext = "<p class='song'>";
+        $songtext = "";
         foreach(preg_split("/((\r?\n)|(\r\n?))/", $text) as $line){
             if(empty($line) or ctype_space($line)){
                 $line = "<p class='song'><br>";
             } else {
-                $line = $this->tochords($line)."<br>";
+                $line = "<p class='song'>".$this->tochords($line)."<br>";
             }
             $songtext .= $line;
         }

@@ -7,6 +7,12 @@ class IndexController
     private const loginid = 'login';
     private const logoutid = 'logout';
 
+    private $canEditSongs;
+    private $canDeleteSongs;
+    private $canAddSongs;
+    private $canAddGenres;
+    private $canDeleteGenres;
+
     private $songId;
     private $id;
     private $genreId;
@@ -16,12 +22,10 @@ class IndexController
     private $genres;
     private $genre;
 
-    private $isSong;
-
-    private $formController;
     private $loginController;
     private $editController;
     private $songtextController;
+    private $songtextEditController;
     private $genreController;
 
     public function render(){
@@ -39,12 +43,17 @@ class IndexController
                 $this->genreController->render();
                 if($this->songId) {
                     $this->songtext = DBAccess::getController()->getSongtext($this->genre, $this->songId);
-                    $this->songtextController = new SongtextController($this->songtext);
-                    $this->songtextController->render($this->loginController->isAdmin());
+                    if(isset($_POST['edit'])&&$this->canEditSongs){
+                        $this->songtextEditController = new SongtextEditController($this->songtext);
+                        $this->songtextEditController->render();
+                    } else {
+                        $this->songtextController = new SongtextController($this->songtext);
+                        $this->songtextController->render($this->canEditSongs);
+                    }
                 }
                 break;
             case $this->id == self::loginid: //Login Tab
-                if($this->loginController->isLoggedIn()){
+                if(LoginController::isLoggedIn()){
                     header("Location: ./index.php?id=".self::editid);
                 } else{
                     if($this->loginController->checkLoginOrRegistration($this->actionId)){
@@ -55,7 +64,7 @@ class IndexController
                 }
                 break;
             case $this->id == self::editid : //Edit Tab
-                if(!$this->loginController->isLoggedIn()) {
+                if(!LoginController::isLoggedIn()) {
                     header('Location: ./index.php?id='.self::loginid);
                 } else{
                     $this->editController = new EditController($this->actionId);
@@ -72,6 +81,7 @@ class IndexController
     }
     public function __construct()
     {
+
         if (isset($_GET['id'])) {
             $this->id = $_GET['id'];
         }
@@ -87,11 +97,17 @@ class IndexController
         $this->loginController = new LoginController();
         $this->genres = DBAccess::getController()->loadAllGenres();
 
+        //Rights:
+        $this->canAddGenres = LoginController::isLoggedIn();
+        $this->canAddSongs = LoginController::isLoggedIn();
+        $this->canEditSongs = LoginController::isAdmin();
+        $this->canDeleteSongs = LoginController::isAdmin();
+        $this->canDeleteGenres = LoginController::isAdmin();
     }
 
 
     private function renderNav(){
-        if($this->loginController->isLoggedIn()){
+        if(LoginController::isLoggedIn()){
             $actionArray = array(self::logoutid => 'Logout',self::editid =>"Edit" );
         } else{
             $actionArray['login'] = 'Login';
@@ -107,7 +123,7 @@ class IndexController
             }
         }
         //parms: $genreArray, $actionArray, $activeTab
-        include "./view/header_nav.php";
+        require_once "./view/Navigation/header_nav.php";
     }
 }
 
@@ -132,7 +148,7 @@ class IndexController
                 }
                 $options = ['add_song' => 'Add Song', 'add_genre' => 'Add Genre'];
                 echoSmallNav($options);
-                include "view/edit.php";
+                include "view/edit_song.php";
             } else{
                 // not logged in: Login Page
                 $id = 'login';

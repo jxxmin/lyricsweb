@@ -25,7 +25,7 @@ class GenreController
             }
         }
         //parms: $array[song_id => Song Title], $activeId, $genreId, $isSong
-        require_once "./view/songnavigation.php";
+        require_once "./view/Navigation/songnavigation.php";
 
 
     }
