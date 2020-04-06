@@ -41,4 +41,20 @@ class Songtext
         $input = str_replace('_', ' ', $input);
         return $input;
     }
+
+    /**
+     * @param mixed|string $title
+     */
+    public function setTitle($title): void
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * @param mixed $songtext
+     */
+    public function setSongtext($songtext): void
+    {
+        $this->songtext = $songtext;
+    }
 }
