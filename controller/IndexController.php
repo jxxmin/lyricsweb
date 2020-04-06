@@ -67,7 +67,7 @@ class IndexController
                 if(!LoginController::isLoggedIn()) {
                     header('Location: ./index.php?id='.self::loginid);
                 } else{
-                    $this->editController = new EditController($this->actionId);
+                    $this->editController = new EditController($this->actionId, $this->genres);
                     $this->editController->render();
                 }
 

@@ -116,6 +116,15 @@ class DBAccess
     public function updateSongtext(Songtext $songtext){
         return true;
     }
+    public function addSongtext(Songtext $songtext){
+        return true;
+    }
+    public function addGenre(Genre $genre){
+        return true;
+    }
+    public function deleteSong(Songtext $songtext){
+        return true;
+    }
 
     public function loadAllGenres(){
         $query = "select * from genre";

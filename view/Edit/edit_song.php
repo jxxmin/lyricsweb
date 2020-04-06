@@ -1,9 +1,8 @@
 <?php
 //parms: title, token, songtext, $genre, $song
-$title = (isset($title)) ? $title : "Ups...";
+$title = (isset($title)) ? $title : "";
 $token = (isset($token)) ? $token : "";
-$songtext = (isset($songtext)) ? $songtext : "Der Songtext konnte leider nicht gefunden werden.";
-;
+$songtext = (isset($songtext)) ? $songtext : "";
 ?>
 <section>
     <form method="post" action="index.php?genre=<?php echo $genre?>&song=<?php echo $song?> ">
