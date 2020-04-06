@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 25. Mrz 2020 um 22:24
--- Server-Version: 10.1.36-MariaDB
--- PHP-Version: 7.2.11
+-- Erstellungszeit: 06. Apr 2020 um 11:17
+-- Server-Version: 10.1.35-MariaDB
+-- PHP-Version: 7.2.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -38,6 +38,18 @@ CREATE TABLE `genre` (
 -- --------------------------------------------------------
 
 --
+-- Tabellenstruktur für Tabelle `history`
+--
+
+CREATE TABLE `history` (
+  `action` varchar(50) NOT NULL,
+  `lyrics_title` varchar(255) NOT NULL,
+  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Tabellenstruktur für Tabelle `login`
 --
 
@@ -59,6 +71,42 @@ CREATE TABLE `lyrics` (
   `songtext` blob NOT NULL,
   `fk_genre` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+--
+-- Trigger `login`
+--
+DELIMITER $$
+CREATE TRIGGER `test` BEFORE INSERT ON `login` FOR EACH ROW BEGIN
+	IF NEW.username = 'jasmin.fitz@hispeed.com' THEN
+    	SET NEW.username = 'jasmin.fitz@hispeed.ch';
+    END IF;
+END
+$$
+DELIMITER ;
+
+
+--
+-- Trigger `lyrics`
+--
+DELIMITER $$
+CREATE TRIGGER `delete_lyrics` AFTER DELETE ON `lyrics` FOR EACH ROW BEGIN
+	INSERT INTO history VALUES ("DELETE", OLD.titel, DEFAULT);
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `new_lyrics` AFTER INSERT ON `lyrics` FOR EACH ROW BEGIN
+	INSERT INTO history VALUES ("INSERT", NEW.titel, DEFAULT);
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `updated_lyrics` AFTER UPDATE ON `lyrics` FOR EACH ROW BEGIN
+	INSERT INTO history VALUES ("UPDATE", NEW.titel, DEFAULT);
+END
+$$
+DELIMITER ;
 
 --
 -- Indizes der exportierten Tabellen
