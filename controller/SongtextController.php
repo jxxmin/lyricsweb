@@ -4,12 +4,38 @@ global $parms;
 class SongtextController
 {
     private $sharp = true;
-    private $opentag = "<span class='chord'>";
-    private $closetag = "</span>";
-    private $chordregex = '/(\b[A-G][#|b]?m?[2-9]?((sus|maj|min|aug|dim|Maj)[2-9]?)?\b)/';
-    private $replace;
-    private $sharpchord;
-    private $flatchord;
+    private const opentag = "<span class='chord'>";
+    private const closetag = "</span>";
+    private const chordregex = '/(\b[A-G][#|b]?m?[2-9]?((sus|maj|min|aug|dim|Maj)[2-9]?)?\b)/';
+    private const replace = self::opentag."$1".self::closetag;
+    private const sharpchord = array(
+        self::opentag."A#" => self::opentag."B",
+        self::opentag."C#" => self::opentag."D",
+        self::opentag."D#" => self::opentag."E",
+        self::opentag."F#" => self::opentag."G",
+        self::opentag."G#" => self::opentag."A",
+        self::opentag."A" => self::opentag."A#",
+        self::opentag."B" => self::opentag."C",
+        self::opentag."C" => self::opentag."C#",
+        self::opentag."D" => self::opentag."D#",
+        self::opentag."E" => self::opentag."F",
+        self::opentag."F" => self::opentag."F#",
+        self::opentag."G" => self::opentag."G#"
+    );
+    private const flatchord = array(
+        self::opentag."Ab" => self::opentag."A",
+        self::opentag."A" => self::opentag."Bb",
+        self::opentag."Bb" => self::opentag."B",
+        self::opentag."B" => self::opentag."C",
+        self::opentag."C" => self::opentag."Db",
+        self::opentag."Db"=> self::opentag."D",
+        self::opentag."D" => self::opentag."Eb",
+        self::opentag."Eb"=> self::opentag."E",
+        self::opentag."E" => self::opentag."F",
+        self::opentag."F" => self::opentag."Gb",
+        self::opentag."Gb"=> self::opentag."G",
+        self::opentag."G" => self::opentag."Ab"
+    );
 
     private $trans;
     private $col;
@@ -49,52 +75,23 @@ class SongtextController
     public function __construct(Songtext $songtext)
     {
         $this->songtext = $songtext;
-
-        $this->replace = $this->opentag."$1".$this->closetag;
-
-        $this->sharpchord[$this->opentag."A#"] = $this->opentag."B";
-        $this->sharpchord[$this->opentag."C#"] = $this->opentag."D";
-        $this->sharpchord[$this->opentag."D#"] = $this->opentag."E";
-        $this->sharpchord[$this->opentag."F#"] = $this->opentag."G";
-        $this->sharpchord[$this->opentag."G#"] = $this->opentag."A";
-        $this->sharpchord[$this->opentag."A"] = $this->opentag."A#";
-        $this->sharpchord[$this->opentag."B"] = $this->opentag."C";
-        $this->sharpchord[$this->opentag."C"] = $this->opentag."C#";
-        $this->sharpchord[$this->opentag."D"] = $this->opentag."D#";
-        $this->sharpchord[$this->opentag."E"] = $this->opentag."F";
-        $this->sharpchord[$this->opentag."F"] = $this->opentag."F#";
-        $this->sharpchord[$this->opentag."G"] = $this->opentag."G#";
-
-        $this->flatchord[$this->opentag."Ab"] = $this->opentag."A";
-        $this->flatchord[$this->opentag."A"] = $this->opentag."Bb";
-        $this->flatchord[$this->opentag."Bb"] = $this->opentag."B";
-        $this->flatchord[$this->opentag."B"] = $this->opentag."C";
-        $this->flatchord[$this->opentag."C"] = $this->opentag."Db";
-        $this->flatchord[$this->opentag."Db"] = $this->opentag."D";
-        $this->flatchord[$this->opentag."D"] = $this->opentag."Eb";
-        $this->flatchord[$this->opentag."Eb"] = $this->opentag."E";
-        $this->flatchord[$this->opentag."E"] = $this->opentag."F";
-        $this->flatchord[$this->opentag."F"] = $this->opentag."Gb";
-        $this->flatchord[$this->opentag."Gb"] = $this->opentag."G";
-        $this->flatchord[$this->opentag."G"] = $this->opentag."Ab";
-
         $this->checkFont();
-        $this->checkTrans();
         $this->checkColumns();
         $this->text = $this->formatSongtext($this->songtext->getSongtext());
+        $this->checkTrans();
 
     }
 
     private function toChords($input){
-        return preg_replace($this->chordregex, $this->replace, $input);
+        return preg_replace(self::chordregex, self::replace, $input);
     }
 
     private function transposeUp($input){
-        return ($this->sharp) ? strtr($input, $this->sharpchord) : $input = strtr($input, $this->flatchord);
+        return ($this->sharp) ? strtr($input, self::sharpchord) : $input = strtr($input, self::flatchord);
     }
 
     private function transposeDown($input){
-        return ($this->sharp) ? strtr($input, array_flip($this->sharpchord)) : $input = strtr($input, array_flip($this->flatchord));
+        return ($this->sharp) ? strtr($input, array_flip(self::sharpchord)) : $input = strtr($input, array_flip(self::flatchord));
     }
 
     private function checkFont(){

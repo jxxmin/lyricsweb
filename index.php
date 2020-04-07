@@ -28,7 +28,7 @@ $indexController = new IndexController();
 <html lang="de-CH">
 <head>
     <meta charset="utf-8">
-    <title>Songtexte und Akkorde</title>
+    <title>Songtexts and Chords</title>
     <link rel="stylesheet" href="view/layout.css" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet">
 </head>

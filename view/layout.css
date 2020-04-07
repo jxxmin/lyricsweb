@@ -113,7 +113,7 @@ header h1{
 
 /*** Inhalt ***/
 section{
-	min-height:var(--fullheight);
+	min-height: calc(var(--fullheight) - 100px);
 	width:100%;
 	margin: 30px;
 	margin-bottom:60px;
@@ -135,7 +135,6 @@ section h2 input, section h2 select{
 section textarea{
 	float:left;
 	width:80%;
-	height: calc(var(--fullheight) - 130px);
 }
 
 pre{
