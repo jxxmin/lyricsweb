@@ -153,7 +153,7 @@ class LoginController
             'salt' => bin2hex(random_bytes(32)), //write your own code to generate a suitable salt
             'cost' => 12 // the default cost is 10
         ];
-        $hash = password_hash($input, PASSWORD);
+        $hash = password_hash($input, PASSWORD_BCRYPT, $options);
         return $hash;
     }
 
