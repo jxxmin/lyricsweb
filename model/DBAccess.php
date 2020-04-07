@@ -6,12 +6,11 @@ class DBAccess
     private static $dbAccess;
 
     //Connection
-    private $adminConnection;
     private $connection;
-    private const user = 'root';
-    private const password = '';
-    private const adminUser = 'root'; //TODO
-    private const adminPassword = ''; //TODO
+    private const user = 'lyrics_guest';
+    private const password = 'guest'; //TODO
+    private const adminUser = 'lyrics_admin';
+    private const adminPassword = '243-ASF-6ZT-009'; //TODO
     private const host = 'localhost';
     private const database = 'lyricsweb';
 
@@ -28,15 +27,17 @@ class DBAccess
 
     private function getConn(){
         try {
-            $this->connection = (LoginController::isAdmin()) ? new mysqli($this::host,$this::adminUser,$this::adminPassword,$this::database) : new mysqli($this::host,$this::user,$this::password,$this::database);
+            $this->connection = (LoginController::isAdmin())
+                ? new mysqli($this::host,$this::adminUser,$this::adminPassword,$this::database)
+                : new mysqli($this::host,$this::user,$this::password,$this::database);
             return $this->connection;
         }
         catch(PDOException $e){
+            /*
             echo '<p>Verbindung fehlgeschlagen';
             if(ini_get('display_errors')){
                 echo $e -> getMessage();
-            }
-            exit;
+            }*/
         }
     }
 
@@ -93,19 +94,19 @@ class DBAccess
     }
 
     public function insertUser(User $user){
-        $query = "insert into login (username, password, admin) values  (?, ?, ?);";
+        $query = "CALL `spInsertUser`(?, ?);";
         $return = false;
         try {
-            if ($stmt = mysqli_prepare($this->getConn(), $query)) {
-                $username = $user->getUsername();
-                $hashedPassword = $user->getHashedPassword();
-                $isAdmin = $user->isAdmin();
-                mysqli_stmt_bind_param($stmt, "ssb", $username, $hashedPassword, $isAdmin);
-                mysqli_stmt_execute($stmt);
+            if($stmt = mysqli_prepare($this->getConn(), $query)){
+                $name = $user->getUsername();
+                $pw = $user->getHashedPassword();
+                mysqli_stmt_bind_param($stmt, "ss", $name, $pw);
+                $return = $stmt->execute();
                 mysqli_stmt_close($stmt);
-                $return = true;
+                return $return;
+            } else{
+                echo mysqli_error($this->connection);
             }
-
         } catch (Exception $e) {
             echo "Query konnte nicht ausgeführt werden";
             return false;
@@ -114,16 +115,94 @@ class DBAccess
     }
 
     public function updateSongtext(Songtext $songtext){
-        return true;
+        $query = "CALL `spUpdateSong`(?, ?, ?);";
+        try {
+            if($stmt = mysqli_prepare($this->getConn(), $query)){
+                $id = $songtext->getId();
+                $title = $songtext->getTitle();
+                $text = $songtext->getSongtext();
+                mysqli_stmt_bind_param($stmt, "iss", $id, $title, $text);
+                $return = $stmt->execute();
+                mysqli_stmt_close($stmt);
+                return $return;
+            } else{
+                echo mysqli_error($this->connection);
+            }
+        } catch (Exception $e) {
+            echo "Query konnte nicht ausgeführt werden";
+            return false;
+        }
     }
     public function addSongtext(Songtext $songtext){
-        return true;
+        $query = "CALL `spAddSong`(?, ?, ?);";
+        try {
+            if($stmt = mysqli_prepare($this->getConn(), $query)){
+                $title =  $songtext->getTitle();
+                $text = $songtext->getSongtext();
+                $genre = $songtext->getGenre()->getId();
+                mysqli_stmt_bind_param($stmt, "sss", $title, $text, $genre);
+                $return = $stmt->execute();
+                mysqli_stmt_close($stmt);
+                return $return;
+            } else{
+                //echo mysqli_error($this->connection);
+            }
+        } catch (Exception $e) {
+            echo "Query konnte nicht ausgeführt werden";
+            return false;
+        }
     }
     public function addGenre(Genre $genre){
-        return true;
+        $query = "CALL `spAddGenre`(?);";
+        try {
+            if($stmt = mysqli_prepare($this->getConn(), $query)){
+                $g = $genre->getGenre();
+                mysqli_stmt_bind_param($stmt, "s",  $g);
+                $return = $stmt->execute();
+                echo mysqli_error($this->connection);
+                mysqli_stmt_close($stmt);
+                return $return;
+            } else{
+                echo mysqli_error($this->connection);
+            }
+        } catch (Exception $e) {
+            echo "Query konnte nicht ausgeführt werden";
+            return false;
+        }
     }
     public function deleteSong(Songtext $songtext){
-        return true;
+        $query = "CALL `spDeleteSong`(?);";
+        try {
+            if($stmt = mysqli_prepare($this->getConn(), $query)){
+                $id = $songtext->getId();
+                mysqli_stmt_bind_param($stmt, "i",  $id);
+                $return = $stmt->execute();
+                mysqli_stmt_close($stmt);
+                return $return;
+            } else{
+                echo mysqli_error($this->connection);
+            }
+        } catch (Exception $e) {
+            echo "Query konnte nicht ausgeführt werden";
+            return false;
+        }
+    }
+    public function deleteGenre(Genre $genre){
+        $query = "CALL `spDeleteGenre`(?);";
+        try {
+            if($stmt = mysqli_prepare($this->getConn(), $query)){
+                $id = $genre->getId();
+                mysqli_stmt_bind_param($stmt, "i",  $id);
+                $return = $stmt->execute();
+                mysqli_stmt_close($stmt);
+                return $return;
+            } else{
+                echo mysqli_error($this->connection);
+            }
+        } catch (Exception $e) {
+            echo "Query konnte nicht ausgeführt werden";
+            return false;
+        }
     }
 
     public function loadAllGenres(){

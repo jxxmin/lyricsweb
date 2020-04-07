@@ -196,11 +196,12 @@ pre{
 	height:20px;
 	margin-left:5px;
 }
-#editmenu ul li button, #savemenu ul li button{
+button{
 	border-radius:13px;
 	height:25px;
 	margin:0 2.5px;
 	padding: 0 5px;
+	width:auto;
  }
 #editmenu ul li .buttons, #savemenu ul li .buttons{
 	margin:0 15px;
@@ -226,7 +227,14 @@ footer p{
 }
 
 .error {
-	font-size: 13px;
+	font-size: 18px;
 	color: red;
+
+}
+.loginButton{
+	background-color:white;
+	height: 50px;
+	font-size: 18px;
+	border-radius: 25px;
 
 }

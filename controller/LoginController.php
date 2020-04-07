@@ -95,7 +95,7 @@ class LoginController
     }
     private function checkRepeat($repeat){
         $this->repeat = FormController::sanitize($repeat);
-        $this->passwordMatch = ($this->repeat == $this->passwordMatch);
+        $this->passwordMatch = ($this->repeat === $this->password);
     }
 
 
@@ -103,9 +103,6 @@ class LoginController
         $this->user = DBAccess::getController()->getUser($this->username);
         $hashedPw = ($this->user) ? $this->user->getHashedPassword() : "";
 
-        var_dump($hashedPw);
-        echo "<br/>";
-        var_dump($this->password);
         if (password_verify($this->password, $hashedPw)) {
             $this->user->isAdmin() ? $this->setAdminSession() : $this->setUserSession();
             $this->loginSuccess = true;
@@ -144,7 +141,7 @@ class LoginController
     }
 
     public static function getToken(){
-        return $_SESSION['token'];
+        return isset($_SESSION['token']) ? $_SESSION['token'] : false;
     }
     private function makeToken(){
         $length = 32;

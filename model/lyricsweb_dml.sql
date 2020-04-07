@@ -33,7 +33,7 @@ INSERT INTO `genre` (`id`, `genre`) VALUES
 (4, 'country'),
 (3, 'jazz'),
 (1, 'pop'),
-(5, 'reggea');
+(5, 'reggae');
 
 --
 -- Daten für Tabelle `lyrics`

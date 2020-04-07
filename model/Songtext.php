@@ -8,7 +8,7 @@ class Songtext
     private $title;
     private $genre;
 
-    public function __construct($id, $songtext, $title, $genre){
+    public function __construct($id, $songtext, $title, Genre $genre){
         $this->id = $id;
         $this->songtext = $songtext;
         $this->title = $this->makeName($title);

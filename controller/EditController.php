@@ -52,11 +52,17 @@ class EditController
     }
 
     private function saveSong(){
-        $songtext = new Songtext(0, FormController::sanitize($_POST['songtext']), FormController::sanitize($_POST['title']), FormController::sanitize($_POST['genre']));        if(DBAccess::getController()->addSongtext($songtext)){
+        $genre = DBAccess::getController()->getGenre(FormController::sanitize($_POST['genre']));
+        $songtext = new Songtext(0, FormController::sanitize($_POST['songtext']), FormController::sanitize($_POST['title']), $genre);
+        if(DBAccess::getController()->addSongtext($songtext)){
             $title = "Success!";
             $message = "The songtext was successfully added<br>";
             $message .= "<a href='index.php?id=edit&action=add_song' ><p class='song'>Add another</p></a>";;
             //PARMS: $title, $message,
+            require_once './view/info_message.php';
+        } else{
+            //unknown reason -> default message
+            //PARMS: $title, $message
             require_once './view/info_message.php';
         }
     }
@@ -68,38 +74,10 @@ class EditController
             $message .= "<a href='index.php?id=edit&action=add_genre' ><p class='song'>Add another</a>";;
             //PARMS: $title, $message,
             require_once './view/info_message.php';
-        }
-    }
-}
-
-/*$token = LoginController::getToken();
-        if(isset($_POST['token'])&&strcmp($_POST['token'],$token)) { // token needs to be same as session token
-            switch (true) {
-                case isset($_POST['save']):
-                    if(isset($_POST['songtext'])&&isset($_POST['title'])){
-                        $this->saveToDb();
-                    } else{
-                        //unknown reason -> default message
-                        //PARMS: $title, $message
-                        require_once './view/info_message.php';
-                    }
-                    break;
-                case isset($_POST['cancel']):
-                    header("Location: ./index.php?genre=$this->genre&song=$this->song");
-                    break;
-                default:
-                    $title = $this->songtext->getTitle();
-                    $songtext = $this->songtext->getSongtext();
-                    $song = $this->song;
-                    $genre = $this->genre;
-
-                    //parms: title, token, songtext, $genre, $song
-                    require_once './view/Edit/edit_song.php';
-                    break;
-            }
-        }else {
-            $message = "A session Timeout occured... Try refreshing or logging back in.";
+        } else{
+            //unknown reason -> default message
             //PARMS: $title, $message
             require_once './view/info_message.php';
         }
-*/
+    }
+}

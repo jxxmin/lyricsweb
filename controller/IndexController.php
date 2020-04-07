@@ -39,7 +39,7 @@ class IndexController
                 break;
             case $this->genreId: //
                 $this->genre = DBAccess::getController()->getGenre($this->genreId);
-                $this->genreController = new GenreController($this->genre, $this->songId);
+                $this->genreController = new GenreController($this->genre, $this->songId, $this->canDeleteGenres);
                 $this->genreController->render();
                 if($this->songId) {
                     $this->songtext = DBAccess::getController()->getSongtext($this->genre, $this->songId);
