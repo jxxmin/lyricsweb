@@ -6,7 +6,7 @@ class SongtextController
     private $sharp = true;
     private const opentag = "<span class='chord'>";
     private const closetag = "</span>";
-    private const chordregex = '/(\b[A-G][#|b]?m?[2-9]?((sus|maj|min|aug|dim|Maj)[2-9]?)?\b)/';
+    private const chordregex = '/(\b[A-G][#|b]?m?[2-9]?((sus|maj|min|aug|dim|Maj|\+|\-)[2-9]?)?\b)/';
     private const replace = self::opentag."$1".self::closetag;
     private const sharpchord = array(
         self::opentag."A#" => self::opentag."B",
