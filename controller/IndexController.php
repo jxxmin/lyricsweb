@@ -74,7 +74,7 @@ class IndexController
 
                 break;
             default:
-                //header('Location: ./index.php');
+                echo "<img src='./view/img/gitarre.png' alt='Guitar' width='400vw' height='400vw'>";
                 break;
         }
 

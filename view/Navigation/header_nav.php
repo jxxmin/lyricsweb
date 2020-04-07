@@ -14,8 +14,9 @@ $activeTab = (isset($activeTab)) ? $activeTab : "";
 
 ?>
 
-    <header>
+    <header><a href="index.php">
         <h1>Songtexts and Chords</h1>
+        </a>
     </header>
 
     <nav id='mainnav'>
