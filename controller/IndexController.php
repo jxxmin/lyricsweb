@@ -78,6 +78,8 @@ class IndexController
                 break;
         }
 
+        require_once "./view/footer.php";
+
     }
     public function __construct()
     {
