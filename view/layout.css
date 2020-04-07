@@ -139,6 +139,7 @@ section h2 input, section h2 select{
 section textarea{
 	float:left;
 	width:80%;
+	height:calc(var(--fullheight) - 30vh);
 }
 
 pre{
