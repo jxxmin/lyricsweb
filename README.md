@@ -1,8 +1,7 @@
 # Installationsanleitung
 
 ## Vorbereitung
-
-Der Code der Webapplikation befindet sich auf GitHub unter folgendem Link: https://github.com/jxxmin/lyricsweb. In einem ersten Schritt muss der komplette Code heruntergeladen werden. Danach soll XAMPP geöffnet und MySQL gestartet werden.
+In einem ersten Schritt muss der komplette Code heruntergeladen werden. Danach soll XAMPP geöffnet und MySQL gestartet werden.
 
 ## Datenbank mit Replikation einrichten
 Um die Datenbank einzurichten, muss zuerst eine Master-Slave-Verbindung zur Replikation eingerichtet werden. Dazu werden mind. zwei Server benötigt, die sich im selben Netz befinden. Auf beiden soll MariaDB installiert sein. Um die Replikation einzurichten, sind folgende Schritte nötig:
