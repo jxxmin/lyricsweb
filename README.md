@@ -12,6 +12,7 @@ Auf dem Master:
 3)	In my.cnf / my.ini-File unter server-id eine einzigartige Server ID festlegen (Integer zwischen 1 und (232)-1)
 4)	User erstellen, der REPLICATION SLAVE – Privilegien hat
 5)	Server restarten
+
 Auf dem Slave / den Slaves:
 1)	Datenbank lokal einrichten (DDL namens «lyricsweb_ddl.sql» importieren)
 2)	In my.cnf / my.ini-File unter server-id eine einzigartige Server ID festlegen (Integer zwischen 1 und (232)-1)
